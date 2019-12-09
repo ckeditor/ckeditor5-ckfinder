@@ -192,6 +192,17 @@ describe( 'CKFinderCommand', () => {
 				.to.equal( `[<image src="${ url }"></image>]<paragraph>foo</paragraph>` );
 		} );
 
+		it( 'should insert single image if it is configured as image type', () => {
+			const url = 'foo/bar.svg';
+
+			command.execute();
+
+			mockFilesChooseEvent( [ mockFinderFile( url ) ] );
+
+			expect( getModelData( model ) )
+				.to.equal( `[<image src="${ url }"></image>]<paragraph>foo</paragraph>` );
+		} );
+
 		it( 'should insert link if chosen file is not an image', () => {
 			const url = 'foo/bar.pdf';
 
@@ -426,9 +437,9 @@ describe( 'CKFinderCommand', () => {
 			expect( editor.config.get( 'ckfinder.options' ) ).to.deep.equal( { foo: 'bar' } );
 		} );
 
-		function mockFinderFile( url = 'foo/bar.jpg', isImage = true ) {
+		function mockFinderFile( url = 'foo/bar.jpg' ) {
 			return {
-				isImage: () => isImage,
+				isImage: () => true,
 				getUrl: () => url
 			};
 		}
